@@ -1,0 +1,2 @@
+# examinationreportapp
+A Single Page Application (SPA) examination report application developed wit SpringBoot and React. The purpose of this project is to develop an examination system which can be accessible by lecturers, students, and  overseen by an administrator. Lecturers would be given a view of the student registered for their module and be able to assign grade. On the other hand, student will only have a view of the modules they are registered for and associated grade. Finally, visualize the associated grades using D3,.js or HighCharts frameworks
