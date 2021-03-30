@@ -28,4 +28,7 @@ public class AuthToken {
         this.role = role;
     }
 
+    public String getRole() {
+        return role;
+    }
 }

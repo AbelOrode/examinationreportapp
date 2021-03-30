@@ -96,8 +96,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             roleSet.add(role);
             newUser.setRoles(roleSet);
 
-//            return userRepository.save(newUser);
-            return user;
+            return userRepository.save(newUser);
+//            return user;
         }
 
     }

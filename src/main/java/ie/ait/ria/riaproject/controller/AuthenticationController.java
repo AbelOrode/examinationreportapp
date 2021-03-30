@@ -48,9 +48,9 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken(authentication);
 
 
-        ///String Manipulation to get Username and Role
+
         String role= authentication.getAuthorities().toString().replace("[","").replace("]","").split("_")[1];
-        System.out.println("Authen"+role);
+
 
         String userUsername= authentication.getPrincipal().toString().split(" ")[1]
                 .split("=")[1].replace(",","");
