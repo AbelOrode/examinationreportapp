@@ -43,7 +43,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User createStudent(User user) {
-        return null;
+
+        User newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(bcryptEncoder.encode(user.getPassword()));;
+        newUser.setEmail(user.getEmail());
+        newUser.setName(user.getName());
+
+        // add default role of 'USER'
+        Role role = new Role();
+        role.setName("STUDENT");
+        role.setDescription("This is a student role");
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(role);
+        newUser.setRoles(roleSet);
+
+        return userRepository.save(newUser);
     }
 
     @Override

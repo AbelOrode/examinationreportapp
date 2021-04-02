@@ -22,18 +22,18 @@ public class RichInternetApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		for(int i=0;i<2;i++) {
+		for(int i=0;i<20;i++) {
 			User user1 = new User();
-			user1.setName("Admin"+i);
-			user1.setUsername("Abel"+i);
+			user1.setName("Student"+i);
+			user1.setUsername("Student"+i);
 			user1.setPassword("password");
-			user1.setEmail("admin@gmail.com"+i);
+			user1.setEmail("student@gmail.com"+i);
 
 
 
-			 //userService.createAdmin(user1);
+			//userService.createStudent(user1);
 
 
 		}
 
-}}
+	}}
