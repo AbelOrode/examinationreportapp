@@ -1,11 +1,11 @@
 package ie.ait.ria.riaproject.validation;
 
-import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-
-public class ValidateUpdateUser {
+public class ValidateGrade {
 
     @NotNull
     @Size(min=5,max=15, message="username should be between 5 to 15")
@@ -15,11 +15,10 @@ public class ValidateUpdateUser {
     @Size(min=2,max=17, message="Name should be between 2 to 17")
     private String name;
 
-
     @NotNull
-    @Email(message="Email should be valid")
-    private String email;
-
+    @Min(value=0, message="must be equal or greater than 0")
+    @Max(value=100, message="must be equal or less than 100")
+    private int grade;
 
     public String getUsername() {
         return username;
@@ -37,13 +36,12 @@ public class ValidateUpdateUser {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public int getGrade() {
+        return grade;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setGrade(int grade) {
+        this.grade = grade;
     }
-
 
 }

@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "lecturers")
+@org.hibernate.annotations.Immutable
 public class Lecturers implements Serializable {
 
     @Id

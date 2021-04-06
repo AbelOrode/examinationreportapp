@@ -1,17 +1,18 @@
 package ie.ait.ria.riaproject.service.impl;
 
-import ie.ait.ria.riaproject.entity.Role;
-import ie.ait.ria.riaproject.entity.User;
+import ie.ait.ria.riaproject.entity.*;
+import ie.ait.ria.riaproject.entity.Module;
 import ie.ait.ria.riaproject.exception.ExceptionHandler;
-import ie.ait.ria.riaproject.repository.AdminsRepository;
-import ie.ait.ria.riaproject.repository.LecturersRepository;
-import ie.ait.ria.riaproject.repository.StudentsRepository;
-import ie.ait.ria.riaproject.repository.UserRepository;
+import ie.ait.ria.riaproject.repository.*;
 import ie.ait.ria.riaproject.service.UserService;
+import ie.ait.ria.riaproject.validation.ShowGrade;
 import ie.ait.ria.riaproject.validation.ValidateUpdateUser;
+import ie.ait.ria.riaproject.validation.ValidateUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +42,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private BCryptPasswordEncoder bcryptEncoder;
+
+    @Autowired
+    private ModuleRepository moduleRepository;
+
+    @Autowired
+    private GradeRepository gradeRepository;
+
 
     @Override
     public User createStudent(User user) {
@@ -112,7 +121,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             newUser.setRoles(roleSet);
 
             return userRepository.save(newUser);
-//            return user;
         }
 
     }
@@ -123,14 +131,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Page<User> getAllLectures(Pageable pageable) {
-        return (Page)lecturersRepository.findAll(pageable);
+    public Page<User> getAllLecturers(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        return  (Page)lecturersRepository.findAll(
+                PageRequest.of(pageNumber,pageSize,sortDir.equalsIgnoreCase("asc")? Sort.by(sortBy).ascending(): Sort.by(sortBy).descending())
+        );
     }
 
+
+
     @Override
-    public Page<User> getAllStudents(Pageable pageable) {
-        return  (Page)studentsRepository.findAll(pageable);
+    public Page<User> getAllStudents(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        return  (Page)studentsRepository.findAll(
+                PageRequest.of(pageNumber,pageSize,sortDir.equalsIgnoreCase("asc")? Sort.by(sortBy).ascending(): Sort.by(sortBy).descending())
+        );
     }
+
 
     @Override
     public Page<User> getAllAdmins(Pageable pageable) {
@@ -158,15 +173,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         else{
             return userRepository.searchLecturer(username);
         }
-
-
     }
 
     @Override
     public Object searchStudent(String username) {
         Object student= userRepository.searchStudent(username);
-
-
 
         if(student==null){
             throw new ExceptionHandler("This student doesn't exist, make sure you entered the correct username type");
@@ -181,23 +192,96 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user1= userRepository.findByUsername(user.getUsername());
 
         if(user1==null){
-
             throw new ExceptionHandler("Username doesnt exist");
         }
         else{
 
             user1.setEmail(user.getEmail());
             user1.setName(user.getName());
-
             return userRepository.save(user1);
 
         }
     }
 
+
+
+    @Override
+    public List<Module> findModule(String name) {
+        List<Module> module=moduleRepository.findByModuleName(name);
+        if(module==null){
+            throw new ExceptionHandler("Module with this id doesnt exist");
+        }
+        else{
+            return module;
+        }
+
+    }
+
+    @Override
+    public User findUserModules(String username) {
+        User u= userRepository.findByUsername(username);
+        if(u==null){
+
+        }
+        else{
+            return u;
+        }
+        return null;
+    }
+
+    @Override
+    public List<Object> findAllStudentsModule(String username) {
+
+        return moduleRepository.findStudentToModule(username);
+    }
+
+    @Override
+    public Grade postOrUploadGrades(String username, String moduleName,int gradePercentage) {
+        User user = userRepository.findByUsername(username);
+
+        Grade grade = gradeRepository.findByUserAndModuleName(user, moduleName);
+
+
+        if (grade == null) {
+            Grade grade1 = new Grade();
+
+            grade1.setGradePercentage(gradePercentage);
+            grade1.setUser(user);
+            grade1.setModuleName(moduleName);
+
+            return gradeRepository.save(grade1);
+        } else {
+            grade.setGradePercentage(gradePercentage);
+            return gradeRepository.save(grade);
+
+        }
+    }
+
+    @Override
+    public List<Object> studentGrades(String username) {
+        User user= userRepository.findByUsername(username);
+
+        List<Object> newGradeList= userRepository.studentGrades(user.getUsername());
+
+        return newGradeList;
+    }
+
+    @Override
+    public ShowGrade findStudentGradeForAModule(String username, String module) {
+        User user= userRepository.findByUsername(username);
+        Grade grade= gradeRepository.findByUserAndModuleName(user,module);
+
+        ShowGrade sg= new ShowGrade();
+
+        sg.setUsername(user.getUsername());
+        sg.setGradePercentage(grade.getGradePercentage());
+
+        return sg;
+
+    }
+
     @Override
     public Boolean deleteUser(String username) {
-
-        // System.out.println(username);
 
         User user1= userRepository.findByUsername(username);
 
@@ -206,33 +290,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new ExceptionHandler("Username doesnt exist, make sure there is a user with that username");
         }
         else{
-
             userRepository.delete(user1);
             return true;
-
         }
 
     }
 
-
     private Set<SimpleGrantedAuthority> getAuthority(User user) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         user.getRoles().forEach(role -> {
-            //authorities.add(new SimpleGrantedAuthority(role.getName()));
+
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         });
         return authorities;
-        //return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
         User user = userRepository.findByUsername(s);
-        //System.out.println(s);
         if(user == null){
             throw new UsernameNotFoundException("Invalid username or password.");
-
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
 

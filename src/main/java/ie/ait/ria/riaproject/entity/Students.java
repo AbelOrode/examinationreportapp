@@ -24,8 +24,7 @@ public class Students implements Serializable {
     private String email;
     @Column(name="username")
     private String username;
-    @Column(name="phonenumber")
-    private String phonenumber;
+
     public Integer getId() {
         return id;
     }
@@ -50,10 +49,5 @@ public class Students implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
+
 }

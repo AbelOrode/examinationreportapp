@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
+import javax.websocket.server.PathParam;
+import java.util.List;
+
 
 @Repository
-@RepositoryRestResource(collectionResourceRel = "users", path = "users")
+//@RepositoryRestResource(collectionResourceRel = "users", path = "users")
 public interface UserRepository extends JpaRepository <User, Integer>{
 
     User findByUsername(String s);
@@ -23,7 +26,10 @@ public interface UserRepository extends JpaRepository <User, Integer>{
     Object searchLecturer(String username);
 
     @Query(nativeQuery = true,value="Select user_id as id, user.name,user.email,user.username from cma.user inner join user_roles on user_roles.user_id=user.id inner join role on role.id=user_roles.role_id where role.name='ADMIN' and user.username= ?;")
-    Object searchAdmin(String username);
+   Object searchAdmin(String username);
+
+    @Query(nativeQuery = true,value="Select grade.module_name,grade.grade_percentage from user inner join grade on user.id=grade.user_id where user.username= ?;")
+    List<Object> studentGrades(String username);
 
 
 }

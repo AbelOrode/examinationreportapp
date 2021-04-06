@@ -48,7 +48,6 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken(authentication);
 
 
-
         String role= authentication.getAuthorities().toString().replace("[","").replace("]","").split("_")[1];
 
 

@@ -1,5 +1,7 @@
 package ie.ait.ria.riaproject.entity;
 
+
+import io.swagger.annotations.ApiModel;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -7,6 +9,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "module")
+@ApiModel(value = "Module Class", description = "Module for student")
 public class Module {
 
     @Id
@@ -15,7 +18,7 @@ public class Module {
 
     private String moduleName;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private Course course;
 

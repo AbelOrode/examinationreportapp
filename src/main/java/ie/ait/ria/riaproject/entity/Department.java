@@ -1,5 +1,6 @@
 package ie.ait.ria.riaproject.entity;
 
+import io.swagger.annotations.ApiModel;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -9,6 +10,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "department")
+@ApiModel(value = "Department class", description = "Department linked to courses")
 public class Department {
 
     @Id
