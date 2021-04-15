@@ -10,3 +10,12 @@ A Single Page Application (SPA) created with SpringBoot and React. The purpose o
 
 # Student Dashboard
 ![studentDashboard](https://user-images.githubusercontent.com/48480130/114926641-85774a00-9e28-11eb-9ea4-be58aec96c9f.png)
+
+# Visualizaing student records using High Charts
+
+![doughnutChart](https://user-images.githubusercontent.com/48480130/114927011-eacb3b00-9e28-11eb-84d8-6bbc5a1ac589.png)
+
+![studentGradesDb](https://user-images.githubusercontent.com/48480130/114927044-f4ed3980-9e28-11eb-9c82-a95cc5958bcb.png)
+
+![drillDownChart](https://user-images.githubusercontent.com/48480130/114927084-00406500-9e29-11eb-83e2-63d21a737661.png)
+
