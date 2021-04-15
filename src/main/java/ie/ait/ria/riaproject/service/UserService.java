@@ -41,7 +41,7 @@ public interface UserService {
     Boolean deleteUser(String username);
     List<Module> findModule(String name);
 
-    User findUserModules(String username);
+    List<String> findUserModules(String username);
 
     List<Object> findAllStudentsModule(String username);
 

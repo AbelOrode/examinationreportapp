@@ -15,6 +15,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/student")
@@ -22,11 +24,17 @@ public class StudentController {
 
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private TokenProvider jwtTokenUtil;
-
-    @Autowired
     private UserService userService;
+
+
+    @PreAuthorize("hasAnyRole('STUDENT', 'ADMIN')")
+    @RequestMapping(value="/myGrades", method = RequestMethod.GET)
+    public List<Object> getGrades(@RequestParam("username")String username){
+
+
+        return userService.studentGrades(username);
+
+
+
+    }
 }

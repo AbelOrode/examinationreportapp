@@ -67,6 +67,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         roleSet.add(role);
         newUser.setRoles(roleSet);
 
+        Module mod= new Module();
+        mod.setModuleName("Rich Internet Application");
+
+        Module mod1= new Module();
+        mod1.setModuleName("Database System");
+
+        Module mod2= new Module();
+        mod2.setModuleName("Data Visualization");
+
+        Module mod3= new Module();
+        mod3.setModuleName("Cyber Security");
+
+        Module mod4= new Module();
+        mod4.setModuleName("Agile Methodology");
+
+        Module mod5= new Module();
+        mod5.setModuleName("Software Design");
+
+        Set<Module> ms= new HashSet<>();
+        ms.add(mod);ms.add(mod1);ms.add(mod2);ms.add(mod3);ms.add(mod4);ms.add(mod5);
+
+        newUser.setModules(ms);
+
         return userRepository.save(newUser);
     }
 
@@ -87,6 +110,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Set<Role> roleSet = new HashSet<>();
         roleSet.add(role);
         newUser.setRoles(roleSet);
+
+        Module mod= new Module();
+        mod.setModuleName("Agile Methodology");
+
+        Module mod1= new Module();
+        mod1.setModuleName("Software Design");
+
+
+
+        Set<Module> ms= new HashSet<>();
+        ms.add(mod);ms.add(mod1);
+
+        newUser.setModules(ms);
+
 
         return userRepository.save(newUser);
     }
@@ -218,15 +255,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User findUserModules(String username) {
+    public List<String> findUserModules(String username) {
         User u= userRepository.findByUsername(username);
-        if(u==null){
 
+        if(u==null){
+            return null;
         }
         else{
-            return u;
+            List<String> list= new ArrayList<>();
+            for(Module m:u.getModules()){
+                list.add(m.getModuleName());
+            }
+            return list;
         }
-        return null;
+
     }
 
     @Override
