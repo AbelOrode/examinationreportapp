@@ -7,3 +7,6 @@ A Single Page Application (SPA) created with SpringBoot and React. The purpose o
 
 # Lecturer Dashboard
 ![lecturerDashbaord](https://user-images.githubusercontent.com/48480130/114926526-5cef5000-9e28-11eb-9d77-2d86f5caa17e.png)
+
+# Student Dashboard
+![studentDashboard](https://user-images.githubusercontent.com/48480130/114926641-85774a00-9e28-11eb-9ea4-be58aec96c9f.png)
